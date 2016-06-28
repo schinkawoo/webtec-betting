@@ -94,7 +94,7 @@ export default class HomePage extends React.Component {
     }
 
     evaluateKnockoutMatchPrediction(restMatch, matchPrediction) {
-        if(Date.parse(restMatch.date) < Date.now() && restMatch.scores.length > 0) {
+        if(this.parseFuckingDateForApple(restMatch.date) < Date.now() && restMatch.scores.length > 0) {
             var basePoints = restMatch.scores.filter((restScore) => restScore.type=="current").reduce((previous, current) => {
                 var score_1 = parseInt(current.values[0]);
                 var score_2 = parseInt(current.values[1]);
@@ -126,7 +126,7 @@ export default class HomePage extends React.Component {
     }
 
     evaluateGroupMatchPrediction(restMatch, matchPrediction) {
-        if(Date.parse(restMatch.date) < Date.now() && restMatch.scores.length > 0) {
+        if(this.parseFuckingDateForApple(restMatch.date) < Date.now() && restMatch.scores.length > 0) {
             return restMatch.scores.filter((restScore) => restScore.type=="current").reduce((previous, current) => {
                 var score_1 = parseInt(current.values[0]);
                 var score_2 = parseInt(current.values[1]);
@@ -248,7 +248,7 @@ export default class HomePage extends React.Component {
     }
 
     getMatchScore(restMatch) {
-        if(Date.parse(restMatch.date) < Date.now() && restMatch.scores.length > 0) {
+        if(this.parseFuckingDateForApple(restMatch.date) < Date.now() && restMatch.scores.length > 0) {
             return restMatch.scores.filter((restScore) => restScore.type=="current").reduce((previous, current) => {
                 return current.values.join(" - ");
             }, "");
@@ -259,8 +259,8 @@ export default class HomePage extends React.Component {
 
     getMatchStatus(restMatch) {
         var nowDate = Date.now();
-        var matchStart = Date.parse(restMatch.date);
-
+        var matchStart = this.parseFuckingDateForApple(restMatch.date)
+        console.log(matchStart)
         if(matchStart > nowDate) {
             return "NOT_STARTED";
         } else if(restMatch.status == "AFTER_PENALTY" || restMatch.status == "AFTER_EXTRA_TIME" || restMatch.status == "ENDED") {
@@ -277,7 +277,7 @@ export default class HomePage extends React.Component {
             "August", "September", "October",
             "November", "December"
         ];
-        var date = new Date(dateString);
+        var date = this.parseFuckingDateForApple(dateString);
         var time = date.getHours()  +':'+ ('0'+date.getMinutes()).slice(-2);
         return date.getDate() +' '+ monthNames[date.getMonth()] +' '+ date.getFullYear() +' ' + time;
     }
@@ -291,6 +291,11 @@ export default class HomePage extends React.Component {
 
     goToMatch(matchUrl){
         window.open(matchUrl, "_blank");
+    }
+
+    parseFuckingDateForApple(dateString) {
+        var dateSplits = dateString.split(/[-T.]/);
+        return new Date( dateSplits.slice(0,3).join('/')+' '+dateSplits[3] );
     }
 
     render() {
@@ -322,6 +327,8 @@ export default class HomePage extends React.Component {
                 </tr>
             )
         });
+
+        console.log(this.state)
 
         if(this.state.detailsTarget && this.state.detailsTarget != "loading") {
             var displayMatchesDetails = this.state.groupPredictions[this.state.detailsTarget].map((matchPrediction, index)=>{
