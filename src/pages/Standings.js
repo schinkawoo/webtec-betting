@@ -285,7 +285,7 @@ export default class HomePage extends React.Component {
 
     handleRowClick = (person) => {
         if(this.mounted){
-            browserHistory.push("/standings/" + person)
+            browserHistory.push("/" + person)
         }
     };
 

@@ -11,7 +11,7 @@ ReactDOM.render(
     <Router history={browserHistory}>
         <Route path="/" component={Layout}>
             <IndexRoute component={Standings}></IndexRoute>
-            <Route path="standings(/:prophet)" name="standings" component={Standings}></Route>
+            <Route path="/(:prophet)" name="details" component={Standings}></Route>
         </Route>
     </Router>,
     content

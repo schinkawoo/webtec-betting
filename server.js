@@ -21,6 +21,11 @@ app.get('/', function(request, response) {
   response.sendFile(__dirname + '/public/index.html')
 });
 
+// send all requests to index.html so browserHistory in React Router works
+app.get('*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'))
+})
+
 app.listen(PORT, function(error) {
   if (error) {
     console.error(error);
