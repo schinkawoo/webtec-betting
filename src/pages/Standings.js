@@ -1,5 +1,6 @@
 import React from "react"
 import $ from "jquery"
+import {browserHistory} from 'react-router';
 
 export default class HomePage extends React.Component {
     constructor() {
@@ -9,7 +10,7 @@ export default class HomePage extends React.Component {
             knockoutsMatches: [],
             groupPredictions:{},
             knockoutsPredictions:{},
-            detailsTarget:"loading"
+            detailsTarget:"loading",
         };
     }
 
@@ -40,6 +41,7 @@ export default class HomePage extends React.Component {
         this.mounted = false;
     }
 
+
     componentDidMount() {
         this.mounted = true;
         var serverUrl = "https://amateur-betting-server.herokuapp.com/";
@@ -56,7 +58,7 @@ export default class HomePage extends React.Component {
         }, {});
         this.evaluateGroupPredictions();
         this.evaluateKnockoutPredictions();
-        this.state.detailsTarget = "";
+        this.state.detailsTarget = this.props.params.prophet;
         this.setState(this.state);
     }
 
@@ -163,7 +165,7 @@ export default class HomePage extends React.Component {
                     points+= redCardPrediction == this.translateTeamNameToEnglish(event.team.name) ? 5 : 0;
                 }
             })
-        })
+        });
 
         return points;
     }
@@ -259,8 +261,7 @@ export default class HomePage extends React.Component {
 
     getMatchStatus(restMatch) {
         var nowDate = Date.now();
-        var matchStart = this.parseFuckingDateForApple(restMatch.date)
-        console.log(matchStart)
+        var matchStart = this.parseFuckingDateForApple(restMatch.date);
         if(matchStart > nowDate) {
             return "NOT_STARTED";
         } else if(restMatch.status == "AFTER_PENALTY" || restMatch.status == "AFTER_EXTRA_TIME" || restMatch.status == "ENDED") {
@@ -285,9 +286,10 @@ export default class HomePage extends React.Component {
     handleRowClick = (person) => {
         if(this.mounted){
             this.state.detailsTarget = person;
+            window.location.assign("/#/standings/" + person);
             this.setState(this.state);
         }
-    }
+    };
 
     goToMatch(matchUrl){
         window.open(matchUrl, "_blank");
@@ -299,10 +301,12 @@ export default class HomePage extends React.Component {
     }
 
     render() {
-        var hideTableClass = this.state.detailsTarget ? {display:"none"} : {};
-        var hideDetailsClass = this.state.detailsTarget && this.state.detailsTarget != "loading" ? {} : {display:"none"};
-        var hideLoading = this.state.detailsTarget == "loading" ? {} : {display:"none"};
+        var displayTarget = this.state.detailsTarget == "loading" ? this.state.detailsTarget : this.props.params.prophet;
+        var hideTableClass = displayTarget ? {display:"none"} : {};
+        var hideDetailsClass = displayTarget && displayTarget != "loading" ? {} : {display:"none"};
+        var hideLoading = displayTarget == "loading" ? {} : {display:"none"};
         var results = {};
+
         Object.keys(this.state.groupPredictions).forEach((userName) => {
             results[userName] =  {
                 "title": userName,
@@ -328,10 +332,8 @@ export default class HomePage extends React.Component {
             )
         });
 
-        console.log(this.state)
-
-        if(this.state.detailsTarget && this.state.detailsTarget != "loading") {
-            var displayMatchesDetails = this.state.groupPredictions[this.state.detailsTarget].map((matchPrediction, index)=>{
+        if(displayTarget && displayTarget != "loading") {
+            var displayMatchesDetails = this.state.groupPredictions[displayTarget].map((matchPrediction, index)=>{
                 if(matchPrediction.type == "match") {
                     switch (matchPrediction.status){
                         case "NOT_STARTED":
@@ -355,7 +357,7 @@ export default class HomePage extends React.Component {
                 }
             });
 
-            var displayKnockoutMatchesDetails = this.state.knockoutsPredictions[this.state.detailsTarget].map((matchPrediction, index)=>{
+            var displayKnockoutMatchesDetails = this.state.knockoutsPredictions[displayTarget].map((matchPrediction, index)=>{
                 if(matchPrediction.type == "match") {
                     switch (matchPrediction.status){
                         case "NOT_STARTED":
@@ -379,7 +381,7 @@ export default class HomePage extends React.Component {
                 }
             });
 
-            var displayOtherDetails = this.state.groupPredictions[this.state.detailsTarget].map((predictionItem, index)=>{
+            var displayOtherDetails = this.state.groupPredictions[displayTarget].map((predictionItem, index)=>{
                 if(predictionItem.type == "red_cards") {
                     return (
                         <tr key={index}>
@@ -404,7 +406,7 @@ export default class HomePage extends React.Component {
         return (
             <div>
                 <div style={hideTableClass}>
-                    <h1>Standings</h1>
+                    <h1>Standings </h1>
                     <table className="table table-hover">
                         <thead>
                             <tr>
@@ -421,7 +423,7 @@ export default class HomePage extends React.Component {
                     <h1>Standings</h1>
                     <h3 style={{cursor: "pointer"}} onClick={this.handleRowClick.bind(this, "")}>{"<<<"} Back</h3>
                     <div style={{paddingTop: "10px"}}>
-                        <h4>Goal/Card Predictions (<span style={{textTransform: "capitalize"}}>{this.state.detailsTarget}</span>)</h4>
+                        <h4>Goal/Card Predictions (<span style={{textTransform: "capitalize"}}>{displayTarget}</span>)</h4>
                         <table className="table table-hover">
                             <thead>
                             <tr>
@@ -437,7 +439,7 @@ export default class HomePage extends React.Component {
                         </table>
                     </div>
                     <div>
-                        <h4>Knockout Match Predictions (<span style={{textTransform: "capitalize"}}>{this.state.detailsTarget}</span>)</h4>
+                        <h4>Knockout Match Predictions (<span style={{textTransform: "capitalize"}}>{displayTarget}</span>)</h4>
                         <table className="table table-hover">
                             <thead>
                             <tr>
@@ -452,7 +454,7 @@ export default class HomePage extends React.Component {
                         </table>
                     </div>
                     <div>
-                        <h4>Group Match Predictions (<span style={{textTransform: "capitalize"}}>{this.state.detailsTarget}</span>)</h4>
+                        <h4>Group Match Predictions (<span style={{textTransform: "capitalize"}}>{displayTarget}</span>)</h4>
                         <table className="table table-hover">
                             <thead>
                             <tr>

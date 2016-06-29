@@ -1,7 +1,7 @@
 {
-  "name": "react-node-starter",
-  "version": "0.2.0",
-  "description": "an example for deploying a React + NodeJS app to Heroku",
+  "name": "webtec-betting",
+  "version": "0.1.0",
+  "description": "This is an app made for learning purposes.",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
