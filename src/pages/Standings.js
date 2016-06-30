@@ -32,9 +32,8 @@ export default class HomePage extends React.Component {
 
     getAllMatchIds(phase) {
         var serverUrl = "https://amateur-betting-server.herokuapp.com/";
-        var groupPhaseMatches = this.getJsonData(serverUrl + phase + "/matches/")
-        var knockoutPhaseMatches = this.getJsonData(serverUrl + phase + "/matches/")
-        return groupPhaseMatches.concat(knockoutPhaseMatches).map((match) => match.id);
+        var matches = this.getJsonData(serverUrl + phase + "/matches/")
+        return matches.map((match) => match.id);
     }
 
     componentWillUnMount(){
@@ -404,7 +403,7 @@ export default class HomePage extends React.Component {
         return (
             <div>
                 <div style={hideTableClass}>
-                    <h1>Standings </h1>
+                    <h1>Standings</h1>
                     <table className="table table-hover">
                         <thead>
                             <tr>
