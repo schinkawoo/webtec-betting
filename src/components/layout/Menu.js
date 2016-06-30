@@ -1,5 +1,5 @@
 import React from "react";
-import { IndexLink, Link } from "react-router";
+import { Link } from "react-router";
 
 export default class Menu extends React.Component {
     constructor() {
@@ -47,7 +47,7 @@ export default class Menu extends React.Component {
                     <div class={"navbar-collapse " + navClass} id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
                             <li class={standingsClass}>
-                                <Link to="/" onClick={this.toggleCollapse.bind(this)}>Euro 2016</Link>
+                                <Link to="/" onClick={this.toggleCollapse.bind(this)}>Silvio Is Ass</Link>
                             </li>
                         </ul>
                     </div>

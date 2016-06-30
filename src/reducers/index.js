@@ -4,3 +4,4 @@
 
 export matches from "./matches"
 export predictions from "./predictions"
+export display from "./display"

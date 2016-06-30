@@ -34,3 +34,17 @@ function getSportApiMatches(matchIds=[]) {
         payload: axios.get("http://api.sport.blick.ch/match/" + matchIds.join(","))
     }
 }
+
+export function resetDisplay(defaultState={}) {
+    return {
+        type: "RESET_DISPLAY",
+        payload: defaultState
+    }
+}
+
+export function updateDisplay(property={}) {
+    return {
+        type: "UPDATE_DISPLAY",
+        payload: property
+    }
+}

@@ -12,7 +12,7 @@ const store = createStore(
         ...appReducers,
         routing: routerReducer
     }),
-    applyMiddleware(logger(), promise())
+    applyMiddleware(promise())
 );
 
 
