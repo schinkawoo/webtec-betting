@@ -23,10 +23,14 @@ export default class Details extends React.Component {
         var {predictions} = this.props;
         var {matches} = this.props;
         var {prophet} = this.props.params;
+
+        if(!predictions[prophet])
+            return []
+
         return predictions[prophet].map((matchPrediction, index)=> {
             if (matchPrediction.type == "match") {
                 var match = matches[matchPrediction.match.id];
-                if(!phase || phase == match.phase) {
+                if(!phase || (match && phase == match.phase)) {
                     return (
                         <MatchRow key={index} match={match} matchPrediction={matchPrediction} phase={phase}/>
                     )
@@ -38,6 +42,10 @@ export default class Details extends React.Component {
     getOtherRows() {
         var {predictions} = this.props;
         var {prophet} = this.props.params;
+
+        if(!predictions[prophet])
+            return []
+
         var finalResult =  predictions[prophet].map((predictionItem, index)=>{
                 if(predictionItem.type == "red_cards") {
                     var points = this.evaluateRedCardPrediction(predictionItem.prediction);

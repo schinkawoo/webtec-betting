@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from "react-dom"
-import {Router, Route, IndexRoute, browserHistory} from "react-router"
+import {Router, Route, IndexRoute, browserHistory, Redirect} from "react-router"
 import {syncHistoryWithStore} from 'react-router-redux'
 import {Provider} from 'react-redux'
 import * as actions from './actions'
@@ -24,7 +24,8 @@ ReactDOM.render(
             <Route path="/" component={Layout}>
                 <IndexRoute component={Standings}></IndexRoute>
                 <Route path="/" name="standings" component={Standings}></Route>
-                <Route path="/(:prophet)" name="details" component={Details}></Route>
+                <Route path="/:prophet" name="details" component={Details}></Route>
+                <Redirect from='*' to='/' />
             </Route>
         </Router>
     </Provider>,
