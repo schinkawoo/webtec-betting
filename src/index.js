@@ -25,6 +25,7 @@ ReactDOM.render(
                 <IndexRoute component={Standings}></IndexRoute>
                 <Route path="/" name="standings" component={Standings}></Route>
                 <Route path="/:prophet" name="details" component={Details}></Route>
+                <Route path="*" name="standings" component={Standings}></Route>
                 <Redirect from='*' to='/' />
             </Route>
         </Router>
