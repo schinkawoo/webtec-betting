@@ -47,7 +47,7 @@ export default class Menu extends React.Component {
                     <div class={"navbar-collapse " + navClass} id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
                             <li class={standingsClass}>
-                                <Link to="/" onClick={this.toggleCollapse.bind(this)}>Silvio Is Ass</Link>
+                                <Link to="/" onClick={this.toggleCollapse.bind(this)}>Sorry Silvio, but you really are an ASSSSSSSSSS!!!!!</Link>
                             </li>
                         </ul>
                     </div>
